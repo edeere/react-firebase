@@ -1,15 +1,18 @@
 import React, { useState } from "react";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+// import firebase from "firebase";
+import firebase from '../../configs/firebaseConfig'
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const auth = getAuth();
+  // const auth = getAuth();
+
   const handleLogin = () => {
-    signInWithEmailAndPassword(auth, email, password)
+    firebase.auth().signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
-        const user = userCredential.user;
-        console.log("Singed in user: ", user);
+        const user = userCredential.user;        
+        // dispatch(saveUserData())
+        console.log("Signed in user: ", user);
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -17,6 +20,7 @@ const Login = () => {
         console.log("An error occured: ", errorCode, errorMessage);
       });
   };
+
   return (
     <div>
       <h1>Login</h1>

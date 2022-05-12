@@ -6,27 +6,34 @@ import Reset from "./pages/auth/Reset";
 import Home from "./pages/Home";
 import Secret from "./pages/protected/Secret";
 
-import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "./configs/firebaseConfig";
-import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+// import { initializeApp } from "firebase/app";
+// import { firebaseConfig } from "./configs/firebaseConfig";
+// import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import firebase from "./configs/firebaseConfig";
 import { useSelector, useDispatch } from "react-redux";
-import { saveUser } from "./redux/slice/authSlice";
+import { saveUserData } from "./redux/slice/authSlice";
 import ProtectedRoute from "./utils/ProtectedRoute";
+
 function App() {
-  initializeApp(firebaseConfig);
-  const auth = getAuth();
+  // firebase.initializeApp(firebaseConfig);
+
   const user = useSelector((state) => state.auth.value);
+
   console.log("user from state", user);
   const dispatch = useDispatch();
+
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        dispatch(saveUser(user.refreshToken));
+        // dispatch(updateUser({userId: user.uid, email: user.email}));
+        dispatch(saveUserData(user));
+        // update firebase()
+        
       } else {
-        dispatch(saveUser(undefined));
+        // dispatch(saveUser(undefined));
       }
     });
-  }, [auth, dispatch]);
+  }, []);
 
   return (
     <Router>
@@ -51,7 +58,7 @@ function App() {
             <Link
               to="#"
               onClick={() => {
-                signOut(auth)
+                firebase.auth().signOut()
                   .then(() => {
                     console.log("user signed out");
                   })

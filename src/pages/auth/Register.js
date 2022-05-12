@@ -1,15 +1,32 @@
 import React, { useState } from "react";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+// import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+// import { getDatabase } from "firebase/database";
+import firebase from "firebase";
+import { saveUserData } from "../../redux/slice/authSlice";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
+  const dispatch = useDispatch()
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const auth = getAuth();
+  // const auth = getAuth();
+
+  // const saveData = (user) => {
+  //   firebase.database().ref(`users/${user.uid}`).update({
+  //     email: user.email,
+  //     userId: user.uid,
+  //     timestamp: Date.now()
+  //   })
+  // }
+
   const handleRegister = () => {
-    createUserWithEmailAndPassword(auth, email, password)
+    firebase.auth().createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         console.log("Registered user: ", user);
+        // saveData(user);
+        dispatch(saveUserData(user))
         setEmail("");
         setPassword("");
       })
@@ -19,6 +36,7 @@ const Login = () => {
         console.log("Error ocured: ", errorCode, errorMessage);
       });
   };
+
   return (
     <div>
       <h1>Register</h1>

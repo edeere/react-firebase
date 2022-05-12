@@ -1,15 +1,35 @@
 import { createSlice } from "@reduxjs/toolkit";
+import firebase from "../../configs/firebaseConfig";
 
-const initialState = {};
 
-export const authSlice = createSlice({
+export const saveUserData = (user) => {
+  firebase.database().ref(`users/${user.uid}`).update({
+    email: user.email,
+    userId: user.uid,
+    timestamp: Date.now()
+  })
+  return user
+}
+
+const authSlice = createSlice({
   name: "user",
-  initialState,
+  initialState: {
+      email: null,
+      userId: null
+  },
   reducers: {
-    saveUser: (state, action) => {
-      state.value = action.payload;
+    updateUser: (state, action) => {
+      state.userId = action.payload.userId;
+      state.email = action.payload.email;
     },
   },
+  extraReducers: {
+    [saveUserData.fulfilled]: (state, action) => {
+      console.log('success!')
+      state.userId = action.payload.user.userId;
+      state.email = action.payload.user.email;
+    },
+  }
 });
 
 // Action creators are generated for each case reducer function
