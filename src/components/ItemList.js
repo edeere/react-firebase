@@ -10,7 +10,6 @@ const ItemList = () => {
     useEffect(() => {
         function getItems() {
         let itemsRef = firebase.database().ref('items')
-        // console.log(itemsRef)
         return itemsRef.on('value', (snapshot) => {
             const data = snapshot.val()
             dispatch(updateItems(data))

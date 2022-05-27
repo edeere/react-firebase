@@ -6,16 +6,12 @@ import Reset from "./pages/auth/Reset";
 import Home from "./pages/Home";
 import Secret from "./pages/protected/Secret";
 
-// import { initializeApp } from "firebase/app";
-// import { firebaseConfig } from "./configs/firebaseConfig";
-// import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import firebase from "./configs/firebaseConfig";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUser } from "./redux/slice/authSlice";
 import ProtectedRoute from "./utils/ProtectedRoute";
 
 function App() {
-  // firebase.initializeApp(firebaseConfig);
 
   const user = useSelector((state) => state.auth);
 
@@ -23,14 +19,12 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("firebase user: ", firebase.auth().currentUser)
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
         dispatch(updateUser({userId: null, email: null}));
-        // dispatch(saveUserData(user));
-        // update firebase()
         
       } else {
-        // dispatch(saveUser(undefined));
       }
     });
   }, [dispatch]);

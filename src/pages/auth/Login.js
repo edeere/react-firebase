@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-// import firebase from "firebase";
 import firebase from '../../configs/firebaseConfig'
 import { useDispatch } from "react-redux"
 import { updateUser } from "../../redux/slice/authSlice"
@@ -7,11 +6,16 @@ import { updateUser } from "../../redux/slice/authSlice"
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const auth = getAuth();
   const dispatch = useDispatch()
 
+  // TODO thought the LOCAL persistence may magically store this in a cookie or
+  // local storage but it does not. Will to need to set up localstorage or cookie
+  // to store this.
   const handleLogin = () => {
-    firebase.auth().signInWithEmailAndPassword(email, password)
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    .then(() => {
+      return firebase.auth().signInWithEmailAndPassword(email, password)
+    })
       .then((userCredential) => {
         const user = userCredential.user
         if (user) {

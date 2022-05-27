@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import firebase from "../../configs/firebaseConfig";
 
 const itemsSlice = createSlice({
     name: "items",
