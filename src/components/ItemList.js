@@ -3,7 +3,6 @@ import firebase from "../configs/firebaseConfig"
 import { useSelector, useDispatch } from "react-redux";
 import { updateItems } from "../redux/slice/itemsSlice";
 
-
 const ItemList = () => {
     const {items} = useSelector((state) => state.items)
     const dispatch = useDispatch()
@@ -11,7 +10,8 @@ const ItemList = () => {
     useEffect(() => {
         function getItems() {
         let itemsRef = firebase.database().ref('items')
-        return itemsRef.once('value', (snapshot) => {
+        // console.log(itemsRef)
+        return itemsRef.on('value', (snapshot) => {
             const data = snapshot.val()
             dispatch(updateItems(data))
         })
@@ -22,13 +22,16 @@ const ItemList = () => {
     return (
         <>
             <p>Look at these great items</p>
-            {items && Object.keys(items).map((keyName, i) => (
-                <div key={i}>
-                <p>{keyName}</p>
-                <p>{items[keyName].name}</p>
-                <p>{items[keyName].description}</p>
-                </div>
-            ))}
+            {items && Object.keys(items).map((keyName, i) => {
+                const item = items[keyName]
+                return (
+                    <div key={i}>
+                    <p>{keyName}</p>
+                    <p>{item.name}</p>
+                    <p>{item.description}</p>
+                    </div>
+                )
+            })}
         </>
     )
 }
