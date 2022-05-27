@@ -11,29 +11,29 @@ import Secret from "./pages/protected/Secret";
 // import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import firebase from "./configs/firebaseConfig";
 import { useSelector, useDispatch } from "react-redux";
-import { saveUserData } from "./redux/slice/authSlice";
+import { updateUser } from "./redux/slice/authSlice";
 import ProtectedRoute from "./utils/ProtectedRoute";
 
 function App() {
   // firebase.initializeApp(firebaseConfig);
 
-  const user = useSelector((state) => state.auth.value);
+  const user = useSelector((state) => state.auth);
 
   console.log("user from state", user);
   const dispatch = useDispatch();
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        // dispatch(updateUser({userId: user.uid, email: user.email}));
-        dispatch(saveUserData(user));
+      if (!user) {
+        dispatch(updateUser({userId: null, email: null}));
+        // dispatch(saveUserData(user));
         // update firebase()
         
       } else {
         // dispatch(saveUser(undefined));
       }
     });
-  }, []);
+  }, [dispatch]);
 
   return (
     <Router>

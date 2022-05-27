@@ -1,11 +1,11 @@
-import React from "react";
+import ItemList from "../components/ItemList";
 
-const Home = () => {
-  return (
-    <div>
-      <h1>Homepage can see everyone!</h1>
-    </div>
-  );
-};
+const Home = () => (
+  <>
+    <h1>Homepage can see everyone!</h1>
+    <ItemList />
+  </>
+);
+
 
 export default Home;

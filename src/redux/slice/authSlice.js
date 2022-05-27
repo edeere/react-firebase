@@ -19,6 +19,7 @@ const authSlice = createSlice({
   },
   reducers: {
     updateUser: (state, action) => {
+      console.log("Running updateUser")
       state.userId = action.payload.userId;
       state.email = action.payload.email;
     },
@@ -33,6 +34,6 @@ const authSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { saveUser } = authSlice.actions;
+export const { updateUser } = authSlice.actions;
 
 export default authSlice.reducer;
